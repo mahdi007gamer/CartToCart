@@ -77,7 +77,7 @@ if (class_exists('WC_Payment_Gateway')) {
          */
         public function payment_fields() {
             if (!empty($this->description)) {
-                echo wp_wpautop(wp_kses_post($this->description));
+                echo wpautop(wp_kses_post($this->description));
             }
 
             $active_cards = Database::get_active_cards();
