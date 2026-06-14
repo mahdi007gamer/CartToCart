@@ -352,12 +352,17 @@ export default function App() {
       const mainFolder = zip.folder("professional-card-to-card");
       if (mainFolder) {
         Object.entries(data.files).forEach(([relPath, content]) => {
-          mainFolder.file(relPath, content as string);
+          const normalizedPath = relPath.replace(/\\/g, '/');
+          mainFolder.file(normalizedPath, content as string);
         });
       }
 
-      // تولید فایل باینری فشرده
-      const content = await zip.generateAsync({ type: "blob" });
+      // تولید فایل باینری فشرده با فناوری استاندارد فشرده‌سازی DEFLATE مناسب با وب‌سرورهای آپاچی و لایت‌اسپید
+      const content = await zip.generateAsync({ 
+        type: "blob",
+        compression: "DEFLATE",
+        compressionOptions: { level: 9 }
+      });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(content);
       link.download = "professional-card-to-card.zip";

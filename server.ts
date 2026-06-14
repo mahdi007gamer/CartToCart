@@ -28,7 +28,7 @@ async function startServer() {
           if (item.isDirectory()) {
             readFilesRecursively(fullPath, baseDir);
           } else if (item.isFile()) {
-            const relPath = path.relative(baseDir, fullPath);
+            const relPath = path.relative(baseDir, fullPath).replace(/\\/g, '/');
             // فایل ممکن است باینری باشد یا متنی، به طور پیش‌فرض متنی ذخیره می‌کنیم
             const content = fs.readFileSync(fullPath, "utf8");
             fileMap[relPath] = content;

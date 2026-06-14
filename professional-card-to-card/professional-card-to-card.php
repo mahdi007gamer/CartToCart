@@ -38,7 +38,12 @@ spl_autoload_register(function ($class) {
     $parts = explode('\\', $relative_class);
     
     // تبدیل نام کلاس به قالب فایل وردپرس (مثال: class-database.php)
-    $class_name = 'class-' . strtolower(str_replace('_', '-', array_pop($parts))) . '.php';
+    $class_base = strtolower(str_replace('_', '-', array_pop($parts)));
+    if (strpos($class_base, 'class-') === 0) {
+        $class_name = $class_base . '.php';
+    } else {
+        $class_name = 'class-' . $class_base . '.php';
+    }
     
     // مسیر فرعی
     $subpath = '';
