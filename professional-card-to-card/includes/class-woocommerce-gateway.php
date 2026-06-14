@@ -3,10 +3,7 @@ namespace ProfessionalCardToCard;
 
 defined('ABSPATH') || exit;
 
-add_action('plugins_loaded', function() {
-    if (!class_exists('WC_Payment_Gateway')) {
-        return;
-    }
+if (class_exists('WC_Payment_Gateway')) {
 
     class class_woocommerce_gateway extends \WC_Payment_Gateway {
 
@@ -265,4 +262,4 @@ add_action('plugins_loaded', function() {
             );
         }
     }
-});
+}

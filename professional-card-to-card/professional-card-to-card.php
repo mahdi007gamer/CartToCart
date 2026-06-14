@@ -99,6 +99,9 @@ class Professional_Card_To_Card_Plugin {
 
         // ثبت شورتکد
         add_shortcode('card_to_card_form', array($this, 'render_form_shortcode'));
+
+        // ثبت فیلتر درگاه پرداخت ووکامرس به صورت پیش‌فرض و ایمن جهت جلوگیری از مشکلات تقدم و تاخر لود هوک‌ها
+        add_filter('woocommerce_payment_gateways', array($this, 'add_wc_gateway'));
     }
 
     /**
@@ -166,11 +169,6 @@ class Professional_Card_To_Card_Plugin {
         }
 
         Payment_Handler::get_instance();
-
-        // بررسی فعال بودن ووکامرس جهت ادغام به عنوان روش پرداخت
-        if (class_exists('WooCommerce')) {
-            add_filter('woocommerce_payment_gateways', array($this, 'add_wc_gateway'));
-        }
     }
 
     /**
