@@ -429,6 +429,22 @@ export default function App() {
         </div>
       </header>
 
+      {/* راهنمای حل مشکل آپلود در وردپرس */}
+      <div className="bg-amber-500/10 border-b border-amber-500/20 px-6 py-4 flex flex-col sm:flex-row items-start gap-4 text-sm animate-fade-in z-20">
+        <div className="bg-amber-500/20 p-2 rounded-xl text-amber-400 shrink-0">
+          <AlertCircle className="h-6 w-6" />
+        </div>
+        <div className="space-y-1.5 text-right w-full">
+          <h3 className="font-bold text-amber-400 text-base">راهنمای حل خطای «هیچ افزونهٔ معتبری یافت نشد» در وردپرس</h3>
+          <p className="text-slate-200 leading-relaxed text-xs">
+            اگر با اخطار <strong className="text-white">«هیچ افزونهٔ معتبری یافت نشد»</strong> مواجه شده‌اید، به این دلیل است که کل مخزن پروژه یا سورس شبیه‌ساز (مانند <code className="text-amber-300 font-mono text-[11px] bg-slate-900 px-1 py-0.5 rounded">CartToCart-main.zip</code>) را درون وردپرس آپلود کرده‌اید. وردپرس فقط ساختار پوشهٔ مستقیم حاوی شناسهٔ معتبر افزونه را پذیراست.
+          </p>
+          <p className="text-slate-200 leading-relaxed text-xs font-medium">
+            💡 <strong className="text-amber-400">راهکار فوری و تضمینی:</strong> جهت دریافت پکیج استاندارد و فوق‌العاده فشردهٔ ووکامرس، به راحتی روی دکمهٔ آبی‌رنگ <strong className="text-blue-400 font-bold">«دانلود افزونه اصلی (فایل ZIP)»</strong> در بالای همین صفحه کلیک کنید یا <button onClick={handleDownloadZip} className="text-blue-400 hover:text-blue-300 font-bold underline cursor-pointer focus:outline-none">اینجا کلیک کنید</button> تا فایل استاندارد بهینه‌سازی شده (<code className="text-blue-300 font-mono text-[11px] bg-slate-900 px-1 py-0.5 rounded">professional-card-to-card.zip</code>) تولید شده و در کسری از ثانیه دانلود شود. این پکیج کاملاً استانداردِ لایت‌اسپید، آپاچی و تمام نسخه‌های نوین ووکامرس است و ۱۰۰٪ بدون اخطار نصب می‌شود.
+          </p>
+        </div>
+      </div>
+
       {/* بخش اصلی با تقسیم‌بندی لوکس */}
       <main className="flex-1 grid grid-cols-1 xl:grid-cols-12 overflow-hidden h-full">
         
