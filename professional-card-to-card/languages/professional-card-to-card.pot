@@ -1,0 +1,19 @@
+# Copyright (C) 2026 Senior Developer
+# This file is distributed under the same license as the Professional Card To Card Payment Gateway plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Professional Card To Card Payment Gateway 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/professional-card-to-card\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: FA <fa@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-06-14T10:00:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.8.1\n"
+"X-Domain: professional-card-to-card\n"
+
+#: professional-card-to-card.php:69
+msgid "خطای امنیتی: توکن نانس نامعتبر است."
+msgstr ""

@@ -1,0 +1,6 @@
+{
+  "name": "WooCommerce Card To Card Payment Simulator",
+  "description": "شبیه‌ساز و پنل اختصاصی مدیریت درگاه پرداخت کارت به کارت خلاقانه و حرفه‌ای ووکامرس در طرح شیشه‌ای فارسی به همراه ماژول دانلود مستقیم افزونه",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
