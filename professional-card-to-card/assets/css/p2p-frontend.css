@@ -1,4 +1,210 @@
 /* Frontend style for Card to Card WordPress Plugin */
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap');
+
+.p2p-checkout-form {
+    font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif !important;
+    direction: rtl !important;
+    text-align: right !important;
+    padding: 24px !important;
+    border-radius: 16px !important;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    background: rgba(30, 41, 59, 0.45) !important;
+    backdrop-filter: blur(16px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+    color: #f1f5f9 !important;
+}
+
+.p2p-checkout-form label {
+    color: #e2e8f0 !important;
+    font-weight: 500 !important;
+    font-size: 0.9em !important;
+    margin-bottom: 4px !important;
+    display: block !important;
+}
+
+.p2p-checkout-form h4, .p2p-checkout-form h5 {
+    color: #ffffff !important;
+}
+
+/* Credit-card style containers for active bank cards */
+.p2p-checkout-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 15px 0 25px 0;
+}
+@media (min-width: 600px) {
+    .p2p-checkout-cards-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.p2p-checkout-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9)) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 14px !important;
+    padding: 16px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+    transition: transform 0.25s ease, border-color 0.25s ease !important;
+    box-sizing: border-box !important;
+}
+
+.p2p-checkout-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(59, 130, 246, 0.4) !important;
+}
+
+.p2p-checkout-card-bank {
+    font-weight: 700 !important;
+    font-size: 1.05em !important;
+    color: #38bdf8 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 6px !important;
+}
+
+.p2p-checkout-card-holder {
+    font-size: 0.85em !important;
+    color: #94a3b8 !important;
+    margin-bottom: 12px !important;
+}
+
+.p2p-checkout-card-number-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: rgba(15, 23, 42, 0.45) !important;
+    padding: 8px 12px !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-sizing: border-box !important;
+}
+
+.p2p-checkout-card-num {
+    font-family: monospace !important;
+    font-size: 1.15em !important;
+    font-weight: 600 !important;
+    letter-spacing: 1px !important;
+    color: #f8fafc !important;
+    user-select: all !important;
+}
+
+.p2p-checkout-copy-btn {
+    background: rgba(59, 130, 246, 0.1) !important;
+    border: 1px solid rgba(59, 130, 246, 0.2) !important;
+    color: #60a5fa !important;
+    padding: 3px 8px !important;
+    border-radius: 6px !important;
+    font-size: 0.75em !important;
+    cursor: pointer !important;
+    font-weight: 500 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    transition: all 0.2s ease !important;
+    margin-right: 8px !important;
+    direction: ltr !important;
+}
+
+.p2p-checkout-copy-btn:hover {
+    background: rgba(59, 130, 246, 0.2) !important;
+    border-color: rgba(59, 130, 246, 0.4) !important;
+    color: #93c5fd !important;
+}
+
+.p2p-checkout-inputs-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+@media (min-width: 600px) {
+    .p2p-checkout-inputs-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.p2p-checkout-field-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    box-sizing: border-box !important;
+}
+
+.p2p-checkout-field-wrapper select, 
+.p2p-checkout-field-wrapper input[type="text"],
+.p2p-checkout-field-wrapper input[type="tel"] {
+    width: 100% !important;
+    padding: 10px 14px !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: rgba(15, 23, 42, 0.6) !important;
+    color: #f8fafc !important;
+    font-size: 0.9em !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+    transition: all 0.2s ease !important;
+}
+
+.p2p-checkout-field-wrapper select:focus, 
+.p2p-checkout-field-wrapper input[type="text"]:focus,
+.p2p-checkout-field-wrapper input[type="tel"]:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+    background: rgba(15, 23, 42, 0.8) !important;
+}
+
+/* Beautiful QR trigger/expander pill */
+.p2p-checkout-qr-trigger {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px dashed rgba(255, 255, 255, 0.15) !important;
+    border-radius: 10px !important;
+    padding: 8px 12px !important;
+    margin-top: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.p2p-checkout-qr-trigger:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+.p2p-checkout-qr-drawer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    display: flex;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.3);
+    border-radius: 10px;
+}
+
+.p2p-checkout-file-uploader {
+    border: 2px dashed rgba(59, 130, 246, 0.3) !important;
+    background: rgba(59, 130, 246, 0.03) !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
+}
+
+.p2p-checkout-file-uploader:hover {
+    border-color: #3b82f6 !important;
+    background: rgba(59, 130, 246, 0.06) !important;
+}
+
 .p2p-glass {
     background: rgba(255, 255, 255, 0.45) !important;
     backdrop-filter: blur(14px) saturate(180%) !important;
@@ -16,3 +222,4 @@
     font-weight: bold;
     text-align: center;
 }
+

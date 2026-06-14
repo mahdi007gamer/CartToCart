@@ -75,57 +75,70 @@ if (class_exists('WC_Payment_Gateway')) {
         /**
          * تمپلیت نمایش کارت‌ها و ورودی اطلاعات در صفحه تسویه حساب ووکامرس
          */
-        public function payment_fields() {
-            if (!empty($this->description)) {
-                echo wpautop(wp_kses_post($this->description));
-            }
-
-            $active_cards = Database::get_active_cards();
-            if (empty($active_cards)) {
-                echo '<p class="p2p-error">' . esc_html__('هیچ کارت بانکی فعالی توسط مدیریت تعریف نشده است.', 'professional-card-to-card') . '</p>';
-                return;
-            }
-
-            $settings = get_option('p2p_settings');
-            $require_last4 = isset($settings['require_last4']) ? $settings['require_last4'] : 'required';
-            $enable_receipt = isset($settings['enable_receipt']) ? $settings['enable_receipt'] : 'yes';
-
             // نمایش کارت‌های با تم شیشه‌ای فارسی
             ?>
-            <div class="p2p-checkout-form p2p-glass" style="direction: rtl; text-align: right; padding: 15px; border-radius: 12px; margin-top: 15px; border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.7); backdrop-filter: blur(8px);">
-                
-                <h4 style="margin-bottom: 12px; font-weight: bold; color: #1e293b;"><?php _e('شماره کارت‌های مقصد جهت واریز وجه:', 'professional-card-to-card'); ?></h4>
-                <div class="p2p-cards-grid" style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 15px;">
-                    <?php foreach ($active_cards as $card): ?>
-                        <div class="p2p-card-item" style="border: 1px dashed #cbd5e1; border-radius: 8px; padding: 12px; background: rgba(248, 250, 252, 0.8);">
-                            <strong><?php echo esc_html($card->bank_name); ?>:</strong> <?php echo esc_html($card->holder_name); ?><br>
-                            <span class="p2p-card-num" style="font-family: monospace; font-size: 1.1em; letter-spacing: 1px; color: #0f172a;"><?php echo esc_html(implode(' - ', str_split($card->card_number, 4))); ?></span>
-                            <?php if ($card->active): ?>
-                                <div style="margin-top: 5px;">
-                                    <img src="<?php echo Qr_Generator::generate_bank_qr($card->card_number, $card->bank_name, $card->holder_name); ?>" alt="QR Code" style="width: 80px; height: 80px; margin-top:5px; border-radius: 4px; border:1px solid #ddd;" />
-                                </div>
-                            <?php endif; ?>
+            <div class="p2p-checkout-form">
+                <h4 style="margin-top: 0; margin-bottom: 8px; font-weight: 700; font-size: 1.1em; text-align: center; color: #ffffff;">
+                    <?php _e('شماره کارت‌های مقصد جهت واریز وجه', 'professional-card-to-card'); ?>
+                </h4>
+                <p style="text-align: center; font-size: 0.85em; color: #94a3b8; margin-top: 0; margin-bottom: 20px; line-height: 1.55;">
+                    <?php _e('لطفا مبلغ سفارش را به یکی از کارت‌های معرفی شده زیر انتقال داده، سپس فرم را تکمیل و ثبت نمایید.', 'professional-card-to-card'); ?>
+                </p>
+
+                <div class="p2p-checkout-cards-grid">
+                    <?php 
+                    $card_index = 0;
+                    foreach ($active_cards as $card): 
+                        $card_index++;
+                        $btn_id = 'p2p_btn_copy_' . $card_index;
+                        $drawer_id = 'p2p_qr_drawer_' . $card_index;
+                        $formatted_num = implode(' - ', str_split($card->card_number, 4));
+                        ?>
+                        <div class="p2p-checkout-card">
+                            <div class="p2p-checkout-card-bank">
+                                <span><?php echo esc_html($card->bank_name); ?></span>
+                                <span class="dashicons dashicons-bank" style="font-size: 18px; width: 18px; height: 18px;"></span>
+                            </div>
+                            <div class="p2p-checkout-card-holder">
+                                <?php _e('به نام:', 'professional-card-to-card'); ?> <strong><?php echo esc_html($card->holder_name); ?></strong>
+                            </div>
+                            
+                            <div class="p2p-checkout-card-number-wrapper">
+                                <span class="p2p-checkout-card-num" id="p2p_card_num_text_<?php echo $card_index; ?>"><?php echo esc_html($formatted_num); ?></span>
+                                <button type="button" class="p2p-checkout-copy-btn" id="<?php echo $btn_id; ?>" onclick="p2pCopyCardNumber(event, '<?php echo esc_js($card->card_number); ?>', '<?php echo $btn_id; ?>')">
+                                    <span class="dashicons dashicons-admin-page" style="font-size: 12px; width: 12px; height: 12px; margin-top: 2px;"></span>
+                                    <?php _e('کپی', 'professional-card-to-card'); ?>
+                                </button>
+                            </div>
+
+                            <div class="p2p-checkout-qr-trigger" onclick="p2pToggleQR('<?php echo $drawer_id; ?>')">
+                                <span style="font-size: 0.8em; font-weight: 500; color: #cbd5e1;"><?php _e('نمایش اسکن کد QR کارت', 'professional-card-to-card'); ?></span>
+                                <span class="dashicons dashicons-qrcode" style="font-size: 16px; width: 16px; height: 16px; color: #60a5fa; margin-top: 3px;"></span>
+                            </div>
+
+                            <div class="p2p-checkout-qr-drawer" id="<?php echo $drawer_id; ?>" style="max-height: 0px; overflow: hidden; transition: all 0.25s ease;">
+                                <img src="<?php echo \ProfessionalCardToCard\Qr_Generator::generate_bank_qr($card->card_number, $card->bank_name, $card->holder_name); ?>" alt="QR Code" style="width: 100px; height: 100px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: white; padding: 4px;" />
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
 
                 <!-- فرم پر کردن اطلاعات تراکنش توسط مشتری -->
-                <div class="p2p-input-fields" style="display: flex; flex-direction: column; gap: 12px;">
-                    
-                    <div>
-                        <label style="display:block; font-size: 0.9em; margin-bottom: 4px;"><?php _e('نام کامل واریز کننده', 'professional-card-to-card'); ?> <span style="color:red;">*</span></label>
-                        <input type="text" name="p2p_full_name" id="p2p_full_name" value="" required style="width:100%; padding: 8px; border: 1px solid #ccc; border-radius:6px;" />
+                <div class="p2p-checkout-inputs-grid" style="margin-top: 25px;">
+                    <div class="p2p-checkout-field-wrapper">
+                        <label><?php _e('نام کامل واریز کننده', 'professional-card-to-card'); ?> <span style="color:#ef4444;">*</span></label>
+                        <input type="text" name="p2p_full_name" id="p2p_full_name" value="" required placeholder="<?php _e('مثال: محمد حسینی', 'professional-card-to-card'); ?>" />
                     </div>
 
-                    <div>
-                        <label style="display:block; font-size: 0.9em; margin-bottom: 4px;"><?php _e('شماره موبایل پیگیری', 'professional-card-to-card'); ?> <span style="color:red;">*</span></label>
-                        <input type="tel" name="p2p_mobile" id="p2p_mobile" value="" required placeholder="مثال: 09121234567" style="width:100%; padding: 8px; border: 1px solid #ccc; border-radius:6px; direction:ltr; text-align:left;" />
+                    <div class="p2p-checkout-field-wrapper">
+                        <label><?php _e('شماره موبایل پیگیری', 'professional-card-to-card'); ?> <span style="color:#ef4444;">*</span></label>
+                        <input type="tel" name="p2p_mobile" id="p2p_mobile" value="" required placeholder="مثال: 09121234567" style="direction:ltr; text-align:left;" />
                     </div>
 
-                    <div>
-                        <label style="display:block; font-size: 0.9em; margin-bottom: 4px;"><?php _e('واریز به کدام کارت بانکی ما؟', 'professional-card-to-card'); ?> <span style="color:red;">*</span></label>
-                        <select name="p2p_bank_card_id" id="p2p_bank_card_id" required style="width:100%; padding: 8px; border: 1px solid #ccc; border-radius:6px;">
-                            <option value=""><?php _e('-- انتخاب کارت بانکی مقصد --', 'professional-card-to-card'); ?></option>
+                    <div class="p2p-checkout-field-wrapper">
+                        <label><?php _e('واریز به کدام کارت مقصد؟', 'professional-card-to-card'); ?> <span style="color:#ef4444;">*</span></label>
+                        <select name="p2p_bank_card_id" id="p2p_bank_card_id" required>
+                            <option value=""><?php _e('-- انتخاب کارت مقصد انجام واریز --', 'professional-card-to-card'); ?></option>
                             <?php foreach ($active_cards as $card): ?>
                                 <option value="<?php echo esc_attr($card->id); ?>"><?php echo esc_html($card->bank_name . ' - ' . $card->holder_name); ?></option>
                             <?php endforeach; ?>
@@ -133,26 +146,104 @@ if (class_exists('WC_Payment_Gateway')) {
                     </div>
 
                     <?php if ($require_last4 !== 'none'): ?>
-                        <div>
-                            <label style="display:block; font-size: 0.9em; margin-bottom: 4px;">
-                                <?php _e('۴ رقم آخر کارت فرستنده', 'professional-card-to-card'); ?> 
-                                <?php if ($require_last4 === 'required'): ?><span style="color:red;">*</span><?php endif; ?>
+                        <div class="p2p-checkout-field-wrapper">
+                            <label>
+                                <?php _e('۴ رقم آخر کارت فرستنده شما', 'professional-card-to-card'); ?> 
+                                <?php if ($require_last4 === 'required'): ?><span style="color:#ef4444;">*</span><?php endif; ?>
                             </label>
-                            <input type="text" name="p2p_last4" id="p2p_last4" maxlength="4" <?php echo ($require_last4 === 'required' ? 'required' : ''); ?> placeholder="1234" style="width:100%; padding: 8px; border: 1px solid #ccc; border-radius:6px; direction:ltr; text-align:left;" />
+                            <input type="text" name="p2p_last4" id="p2p_last4" maxlength="4" <?php echo ($require_last4 === 'required' ? 'required' : ''); ?> placeholder="1234" style="direction:ltr; text-align:left;" />
                         </div>
                     <?php endif; ?>
-
-                    <?php if ($enable_receipt === 'yes'): ?>
-                        <div>
-                            <label style="display:block; font-size: 0.9em; margin-bottom: 4px;"><?php _e('تصویر فیش یا رسید واریز (اختیاری)', 'professional-card-to-card'); ?></label>
-                            <input type="file" name="p2p_receipt" id="p2p_receipt" accept="image/png, image/jpeg, image/jpg, image/webp" style="width:100%; padding: 4px;" />
-                            <small class="text-muted" style="color:#718096; display:block; margin-top:2px;"><?php _e('تصویر JPG, PNG یا WebP تا حجم حداکثر ۲ مگابایت مجاز است.', 'professional-card-to-card'); ?></small>
-                        </div>
-                    <?php endif; ?>
-
-                    <input type="hidden" name="p2p_nonce" value="<?php echo wp_create_nonce('p2p_checkout_submission'); ?>" />
                 </div>
+
+                <?php if ($enable_receipt === 'yes'): ?>
+                    <div class="p2p-checkout-field-wrapper" style="margin-top: 18px;">
+                        <label><?php _e('تصویر فیش یا رسید واریز (اختیاری)', 'professional-card-to-card'); ?></label>
+                        <div class="p2p-checkout-file-uploader" onclick="document.getElementById('p2p_receipt').click()">
+                            <span class="dashicons dashicons-cloud-upload" style="font-size: 28px; width: 28px; height: 28px; color: #3b82f6; margin-bottom: 4px; display: inline-block;"></span>
+                            <div id="p2p_receipt_label" style="font-size: 0.85em; font-weight: 500; color: #cbd5e1;"><?php _e('جهت بارگذاری رسید تصویری کلیک کنید', 'professional-card-to-card'); ?></div>
+                            <small style="color: #94a3b8; font-size: 0.75em; display:block; margin-top: 3px;"><?php _e('فرمت‌های مجاز: JPG, PNG یا WebP تا حجم حداکثر ۲ مگابایت', 'professional-card-to-card'); ?></small>
+                            <input type="file" name="p2p_receipt" id="p2p_receipt" accept="image/png, image/jpeg, image/jpg, image/webp" style="display: none;" onchange="p2pCheckoutFileSelected(this)" />
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <input type="hidden" name="p2p_nonce" value="<?php echo wp_create_nonce('p2p_checkout_submission'); ?>" />
             </div>
+
+            <script>
+            function p2pCopyCardNumber(event, number, btnId) {
+                event.stopPropagation();
+                event.preventDefault();
+                
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(number).then(function() {
+                        p2pShowCopySuccess(btnId);
+                    }).catch(function() {
+                        p2pFallbackCopy(number, btnId);
+                    });
+                } else {
+                    p2pFallbackCopy(number, btnId);
+                }
+            }
+
+            function p2pFallbackCopy(number, btnId) {
+                var textArea = document.createElement("textarea");
+                textArea.value = number;
+                textArea.style.position = "fixed";
+                textArea.style.opacity = "0";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    p2pShowCopySuccess(btnId);
+                } catch (err) {}
+                document.body.removeChild(textArea);
+            }
+
+            function p2pShowCopySuccess(btnId) {
+                var btn = document.getElementById(btnId);
+                if (btn) {
+                    var originalText = btn.innerHTML;
+                    btn.innerHTML = '✓ ' + '<?php echo esc_js(__('کپی شد', 'professional-card-to-card')); ?>';
+                    btn.style.color = '#34d399';
+                    btn.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+                    btn.style.background = 'rgba(16, 185, 129, 0.15)';
+                    setTimeout(function() {
+                        btn.innerHTML = originalText;
+                        btn.style.color = '';
+                        btn.style.borderColor = '';
+                        btn.style.background = '';
+                    }, 1800);
+                }
+            }
+
+            function p2pToggleQR(drawerId) {
+                var drawer = document.getElementById(drawerId);
+                if (drawer) {
+                    if (drawer.style.maxHeight === '0px' || drawer.style.maxHeight === '') {
+                        drawer.style.maxHeight = '140px';
+                        drawer.style.padding = '12px';
+                        drawer.style.marginTop = '8px';
+                        drawer.style.borderTop = '1px solid rgba(255, 255, 255, 0.05)';
+                    } else {
+                        drawer.style.maxHeight = '0px';
+                        drawer.style.padding = '0px';
+                        drawer.style.marginTop = '0px';
+                        drawer.style.borderTop = 'none';
+                    }
+                }
+            }
+
+            function p2pCheckoutFileSelected(input) {
+                var label = document.getElementById('p2p_receipt_label');
+                if (label && input.files && input.files.length > 0) {
+                    label.innerText = '<?php echo esc_js(__('رسید انتخاب شد:', 'professional-card-to-card')); ?> ' + input.files[0].name;
+                    label.style.color = '#34d399';
+                }
+            }
+            </script>
             <?php
         }
 

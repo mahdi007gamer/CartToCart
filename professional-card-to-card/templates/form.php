@@ -201,7 +201,7 @@ $site_key = isset($settings['recaptcha_site_key']) ? $settings['recaptcha_site_k
 
                             <!-- کد QR برای اسکن آنی مستقیم موبایل بانک -->
                             <div class="p2p-card-qr-box" style="position: absolute; left: 15px; bottom: 12px; background: white; padding: 4px; border-radius: 6px; display:inline-block; border: 1px solid #ddd;">
-                                <img src="<?php echo Qr_Generator::generate_bank_qr($card->card_number, $card->bank_name, $card->holder_name); ?>" alt="QR Scan" style="width: 50px; height: 50px; display:block;" />
+                                <img src="<?php echo \ProfessionalCardToCard\Qr_Generator::generate_bank_qr($card->card_number, $card->bank_name, $card->holder_name); ?>" alt="QR Scan" style="width: 50px; height: 50px; display:block;" />
                             </div>
                         </div>
                     <?php 

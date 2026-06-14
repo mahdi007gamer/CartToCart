@@ -25,7 +25,7 @@ if (isset($_POST['p2p_save_settings_data'])) {
     );
 
     update_option('p2p_settings', $updated_settings);
-    Logger::log('تنظیمات عمومی درگاه کارت به کارت بروزرسانی شد.', 'SETTINGS_UPDATE');
+    \ProfessionalCardToCard\Logger::log('تنظیمات عمومی درگاه کارت به کارت بروزرسانی شد.', 'SETTINGS_UPDATE');
 
     echo '<div class="notice notice-success is-dismissible"><p>تنظیمات با موفقیت ذخیره شدند.</p></div>';
 }

@@ -101,7 +101,7 @@ $cards = $wpdb->get_results("SELECT * FROM $cards_table ORDER BY id DESC");
                                     </code>
                                 </td>
                                 <td style="text-align: center;">
-                                    <a href="<?php echo Qr_Generator::generate_bank_qr($card->card_number, $card->bank_name, $card->holder_name); ?>" target="_blank" class="button button-small" style="background:#edf2f7;"><span class="dashicons dashicons-qrcode" style="font-size:16px; margin-top:2px;"></span> <?php _e('کد QR', 'professional-card-to-card'); ?></a>
+                                    <a href="<?php echo \ProfessionalCardToCard\Qr_Generator::generate_bank_qr($card->card_number, $card->bank_name, $card->holder_name); ?>" target="_blank" class="button button-small" style="background:#edf2f7;"><span class="dashicons dashicons-qrcode" style="font-size:16px; margin-top:2px;"></span> <?php _e('کد QR', 'professional-card-to-card'); ?></a>
                                 </td>
                                 <td style="text-align: center;">
                                     <?php if ($card->active): ?>
