@@ -75,6 +75,21 @@ if (class_exists('WC_Payment_Gateway')) {
         /**
          * تمپلیت نمایش کارت‌ها و ورودی اطلاعات در صفحه تسویه حساب ووکامرس
          */
+        public function payment_fields() {
+            if (!empty($this->description)) {
+                echo wpautop(wp_kses_post($this->description));
+            }
+
+            $active_cards = Database::get_active_cards();
+            if (empty($active_cards)) {
+                echo '<p class="p2p-error" style="color:#ef4444; text-align:right; font-weight:500; padding:15px; background:rgba(239, 68, 68, 0.1); border-radius:10px;">' . esc_html__('هیچ کارت بانکی فعالی توسط مدیریت تعریف نشده است.', 'professional-card-to-card') . '</p>';
+                return;
+            }
+
+            $settings = get_option('p2p_settings');
+            $require_last4 = isset($settings['require_last4']) ? $settings['require_last4'] : 'required';
+            $enable_receipt = isset($settings['enable_receipt']) ? $settings['enable_receipt'] : 'yes';
+
             // نمایش کارت‌های با تم شیشه‌ای فارسی
             ?>
             <div class="p2p-checkout-form">
